@@ -1,0 +1,7 @@
+{
+  "name": "RupitianApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

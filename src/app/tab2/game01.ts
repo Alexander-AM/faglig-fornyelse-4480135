@@ -5,7 +5,7 @@ export function startGame01() {
     const BULLET_SPEED : number = 3;
     const ENEMY_INITIAL_SPEED : number = 0.3;
     const ENEMY_SPEED_INCREMENT : number = 0.0005;
-    const ENEMY_MAX_SPEED : number = 1.6;
+    const ENEMY_MAX_SPEED : number = 1.8;
     const MAX_BULLETS : number = 1;
     const MAX_ENEMIES : number = 5;
     const FPS : number = 30;
@@ -34,6 +34,8 @@ export function startGame01() {
 
                     // Add direction class
                     playerDOM.classList.add("side-0");
+
+                    spawnBullet();
                 } else if(ev.startX > ev.currentX + 20 && ev.startY > ev.currentY - 30 && ev.startY < ev.currentY + 30) {
                     // Remove direction classes
                     for(let i = 0; i < 4; i++) {
@@ -42,6 +44,8 @@ export function startGame01() {
 
                     // Add direction class
                     playerDOM.classList.add("side-1");
+
+                    spawnBullet();
                 } else if(ev.startX < ev.currentX - 20 && ev.startY > ev.currentY - 30 && ev.startY < ev.currentY + 30) {
                     // Remove direction classes
                     for(let i = 0; i < 4; i++) {
@@ -50,6 +54,8 @@ export function startGame01() {
 
                     // Add direction class
                     playerDOM.classList.add("side-2");
+
+                    spawnBullet();
                 } else if(ev.startY < ev.currentY - 20 && ev.startX > ev.currentX - 30 && ev.startX < ev.currentX + 30) {
                     // Remove direction classes
                     for(let i = 0; i < 4; i++) {
@@ -58,6 +64,8 @@ export function startGame01() {
 
                     // Add direction class
                     playerDOM.classList.add("side-3");
+
+                    spawnBullet();
                 } else if(ev.startX < ev.currentX + 10 && ev.startX > ev.currentX - 10 && ev.startY < ev.currentY + 10 && ev.startY > ev.currentY - 10) {
                     spawnBullet();
                 }
@@ -74,6 +82,8 @@ export function startGame01() {
     let enemies : any = [];
     let isPlayerDead : boolean = false;
     let enemySpeed = ENEMY_INITIAL_SPEED;
+
+    let updateLoop : any;
 
     
     // DOM elements
@@ -95,11 +105,15 @@ export function startGame01() {
     startButtonDOM.addEventListener("click", function() {
         initialCoverDOM.classList.add("hidden");
         enemySpawner = setTimeout(spawnEnemy, 1000);
+
+        updateLoop = setInterval(update, 1000 / FPS);
     })
 
     deadPopupStartButtonDOM.addEventListener("click", function() {
         deadPopupDOM.classList.remove("visible");
         enemySpawner = setTimeout(spawnEnemy, 1000);
+
+        updateLoop = setInterval(update, 1000 / FPS);
 
 
         score = 0;
@@ -208,6 +222,8 @@ export function startGame01() {
                     || bullets[i][0].offsetLeft > gameCanvasDOM.clientWidth) {
                     bullets[i][0].remove();
                     bullets.splice(i, 1);
+
+                    continue;
                 }
             
             
@@ -277,6 +293,7 @@ export function startGame01() {
                     playerDOM.classList.add("die");
                     deadPopupDOM.classList.add("visible");
                     clearTimeout(enemySpawner);
+                    clearInterval(updateLoop);
                     deadPopupScoreDOM.innerText = score;
 
                     for(let i = 0; i < enemies.length; i++) {
@@ -288,6 +305,4 @@ export function startGame01() {
             }
         }
     }
-
-    const updateLoop = setInterval(update, 1000 / FPS);
 }

@@ -1,7 +1,8 @@
 {
   "name": "RupitianApp",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
